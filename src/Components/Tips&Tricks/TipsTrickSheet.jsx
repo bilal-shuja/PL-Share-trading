@@ -7,7 +7,7 @@ const TipsTrickSheet = () => {
   const [getTipTricks , setTipsTricks] = useState([])
 
   function gettingTipsTricks(){
-    axios.get(`${process.env.REACT_APP_BASE_URL}fetchall_tipsandtricks`)
+    axios.post(`${process.env.REACT_APP_BASE_URL}fetchall_tipsandtricks`)
     .then((res)=>{
       setTipsTricks(res.data.Data)
     })

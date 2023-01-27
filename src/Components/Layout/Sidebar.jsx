@@ -91,13 +91,13 @@ const Sidebar = () => {
                           <p>Users Sheet</p>
                         </Link>
                       </li>
-
+{/* 
                       <li className="nav-item">
                         <Link to="/SuspendedUsers" className="nav-link ">
                           <i className="far fa-circle nav-icon" />
                           <p>Suspended Users</p>
                         </Link>
-                      </li>
+                      </li> */}
                     </ul>
                   </li>
                 ) : null}
@@ -132,7 +132,7 @@ const Sidebar = () => {
                         <p>Member Sheet</p>
                       </Link>
                     </li>
-
+{/* 
                     {roleID === "1" || roleID === "6" ? (
                       <li className="nav-item">
                         <Link to="/StaffQuerySheet" className="nav-link ">
@@ -149,7 +149,7 @@ const Sidebar = () => {
                           <p>Staff Tickets Sheet</p>
                         </Link>
                       </li>
-                    ) : null}
+                    ) : null} */}
                   </ul>
                 </li>
 
@@ -163,12 +163,12 @@ const Sidebar = () => {
                       </p>
                     </a>
                     <ul className="nav nav-treeview">
-                      <li className="nav-item">
+                      {/* <li className="nav-item">
                         <Link to="/AddPackageForm" className="nav-link ">
                           <i className="far fa-circle nav-icon" />
                           <p>Add Package</p>
                         </Link>
-                      </li>
+                      </li> */}
                       <li className="nav-item">
                         <Link to="/PackageSheet" className="nav-link">
                           <i className="far fa-circle nav-icon" />
@@ -311,7 +311,8 @@ const Sidebar = () => {
                     </ul>
                   </li>
                 )}
-                <li className="nav-item menu treeview">
+
+                {/* <li className="nav-item menu treeview">
                   <a href="#" className="nav-link   ">
                     <i className="nav-icon  fa-solid fa-chart-column"></i>
                     <p>
@@ -334,8 +335,9 @@ const Sidebar = () => {
                       </Link>
                     </li>
                   </ul>
-                </li>
-                {roleID === "2" || roleID === "3" || roleID === "4" ? null : (
+                </li> */}
+
+                {/* {roleID === "2" || roleID === "3" || roleID === "4" ? null : (
                   <li className="nav-item menu treeview">
                     <a href="#" className="nav-link   ">
                       <i className="nav-icon  fa-solid fa-signal"></i>
@@ -367,7 +369,7 @@ const Sidebar = () => {
                       </li>
                     </ul>
                   </li>
-                )}
+                )} */}
 
                 {roleID === "6" ? null : (
                   <li className="nav-item menu treeview">
@@ -393,12 +395,12 @@ const Sidebar = () => {
                         </Link>
                       </li>
 
-                      <li className="nav-item">
+                      {/* <li className="nav-item">
                         <Link to="/RetBalanceSheet" className="nav-link ">
                           <i className="far fa-circle nav-icon" />
                           <p>Retrieve Balance Sheet</p>
                         </Link>
-                      </li>
+                      </li> */}
                     </ul>
                   </li>
                 )}

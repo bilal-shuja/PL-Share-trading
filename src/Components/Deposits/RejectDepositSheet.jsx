@@ -90,20 +90,20 @@ const RejectDepositSheet = () => {
                      <table className="table  text-nowrap">
                      <thead className="text-center">
                        <tr>
-                         <th>#</th>
-                         <th>ID</th>
-                         <th>Username</th>
-                         <th>Phone</th>
-                         <th>Account Title</th>
-                         <th>Account Type</th>
-                         <th>Account Sub_type</th>
-                         <th>Account No</th>
-                         <th>Amount</th>
-                         <th>Deposit Slip</th>
-                         <th>Status</th>
-                         <th>Date</th>
-                         <th>Time</th>
-                         <th>Actions</th>
+                       <th>#</th>
+                              <th>Payer ID</th>
+                              <th>Payer Name</th>
+                              <th>Phone</th>
+                              <th>Account Title</th>
+                              <th>Wallet Type</th>
+                              <th>Transaction No</th>
+                              <th>Amount</th>
+                              <th>Deposit Slip</th>
+                              <th>Status</th>
+                              <th>Date</th>
+                              <th>Time</th>
+
+                              <th>Actions</th>
                        </tr>
                      </thead>
                      <tbody className="text-center">
@@ -114,13 +114,12 @@ const RejectDepositSheet = () => {
                              <tr key={index} style={{ color: colorScheme.card_txt_color }}>
                              <td>{ rejectDepoSheet.length - index}</td>
                              <td>{items.payer_id}</td>
-                             <td>{items.username}</td>
-                             <td>{items.phone}</td>
-                             <td>{items.account_title}</td>
-                              <td>{items.account_type}</td>
-                              <td>{items.account_subtype}</td>
-                              <td>{items.account_no}</td>
-                              <td>{items.amount}</td>
+                            <td>{items.username}</td>
+                            <td>{items.phone}</td>
+                            <td>{items.account_type}</td>
+                            <td>{items.wallet_type}</td>
+                            <td>{items.transaction_id}</td>
+                            <td>{items.amount}</td>
                               <td>
                               <img className="img-fluid" src={`${process.env.REACT_APP_IMG_URL}${items.proof_image}`} alt=""  width={60}
                             style={{cursor:"pointer"}}

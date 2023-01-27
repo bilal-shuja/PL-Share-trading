@@ -56,7 +56,6 @@ const WithdrawalSheet = () => {
     axios.post(`${process.env.REACT_APP_BASE_URL}fetch_all_withdrawl_request`)
     .then((res)=>{
       setWithdrawalData(res.data.data)
-      console.log(res.data.data)
     })
     .catch((error)=>{
       return error
@@ -66,7 +65,7 @@ const WithdrawalSheet = () => {
     const remainingWithdrawalUsers = withdrawalData.slice(showLength);
 
 
-  function withdrawalReq(id){
+  function withdrawalReq(id,userID,amount){
     const withdrawalObj = {
       id:id
     }
@@ -74,6 +73,8 @@ const WithdrawalSheet = () => {
     axios.post(`${process.env.REACT_APP_BASE_URL}approve_withdrawal`,withdrawalObj)
     .then((res)=>{
       toast.info(`Withdrawal ${res.data.message}`,{theme:"dark"});
+      geneNotificationOnWithdrawalStatus(userID,amount,res.data.message)
+      
     })
     .catch((error)=>{
       if(error.status === 401){
@@ -104,6 +105,9 @@ function approveWithdrawalByDate(){
 }
 
 function gettingWithdrawalSum(){
+  
+  // const newDeposits = depoTemArr.length > 0 && depoTemArr.filter((item)=> item.status !=="rejected")
+
   if(withdrawalStatus ==='approved' || withdrawalStatus ==='unapproved' ){
     const getWithdrawalSum = withdrawalData.filter((items)=> items.status  === withdrawalStatus).reduce((acc, curr)=> acc+ +curr.requested_amount,0)
     setWidthdrawalSum(getWithdrawalSum)
@@ -118,10 +122,8 @@ function gettingWithdrawalSum(){
   }
 
   else{
-
     const getWithdrawalSum = withdrawalData.reduce((acc, curr)=> acc+ +curr.requested_amount,0)
     setWidthdrawalSum(getWithdrawalSum)
-
   }
 
  
@@ -171,7 +173,7 @@ function geneNotification(){
   const notifiObj ={
     receiver_id:userID,
     body:queryOne,
-    title:"Withdrawal Rejection"
+    title:"Withdrawal_Rejection"
   }
   axios.post(`${process.env.REACT_APP_BASE_URL}post_notification`,notifiObj)
   .then((res)=>{
@@ -187,6 +189,28 @@ function geneNotification(){
     toast.warn("Something went wrong",{theme:"dark"});
 
   })
+}
+
+  
+function geneNotificationOnWithdrawalStatus(userID,amount,message) {
+  const notifiObj = {
+    receiver_id: userID,
+    body: `Your deposit amount ${amount} has ${message}`,
+    title: `Withdrawal_${message}`,
+  };
+  axios
+    .post(`${process.env.REACT_APP_BASE_URL}post_notification`, notifiObj)
+    .then((res) => {
+
+      if (res.data.status === "200") {
+        toast.info("Notified to User", { theme: "dark" });
+      } else {
+        toast.info(`${res.data.message}`, { theme: "dark" });
+      }
+    })
+    .catch((error) => {
+      toast.warn("Something went wrong", { theme: "dark" });
+    });
 }
 
 
@@ -249,9 +273,13 @@ function WithdrawalSheetFun({items , index}){
       <td>
         <div className="d-flex justify-content-center">
           <>
-          <button onClick={()=>withdrawalReq(items.id)} className="btn btn-outline-info">
-            <i className="fa fa-circle-check"></i>
-          </button>
+          {
+             items.status === "approved"? null:
+             <button onClick={()=>withdrawalReq(items.id,items.user_id,items.requested_amount)} className="btn btn-outline-info">
+             <i className="fa fa-circle-check"></i>
+           </button>
+          }
+         
           &nbsp;&nbsp;
 
           <button className="btn btn-outline-primary btn-sm" onClick={()=>{setShowUserModal(true)}}>
@@ -272,7 +300,7 @@ function WithdrawalSheetFun({items , index}){
          className="btn btn-outline-danger btn-sm"
          data-toggle="tooltip" 
          data-placement="top" 
-         title="Withdrawal Rejection"
+         title="Withdrawal_Rejection"
          >
            <i className="fa-solid fa-circle-xmark"></i>
          </button>
@@ -316,6 +344,22 @@ function WithdrawalSheetFun({items , index}){
     SetLocalLogin()
   }, [])
   
+
+  const FilteredWithdrawList  =  withdrawalDate ==='' &&  withdrawalAcc === '' && (withdrawalStatus ==='approved' || withdrawalStatus ==='unapproved') ?   withdrawalData.length > 0 && withdrawalData.filter((items)=> items.status === withdrawalStatus):
+  ( withdrawalAcc !== '' && withdrawalStatus === 'All') || ( withdrawalAcc !== '' && withdrawalDate === ' ')
+                        ?
+                        withdrawalData.filter((items)=> items.wallet_address === withdrawalAcc):
+                        ( withdrawalDate !== '' && withdrawalStatus === 'All') || ( withdrawalDate !== '' && withdrawalAcc === ' ')
+                        ?
+
+                        withdrawalData.filter((items)=> items.Idate === withdrawalDate):
+                        ( withdrawalPhone !== '' && withdrawalStatus === 'All') || ( withdrawalPhone !== '' && withdrawalAcc === ' ')
+                        ?
+                        withdrawalData.filter((items)=> items.phone === withdrawalPhone):
+                        ( withdrawalUsername !== '' && withdrawalStatus === 'All') || ( withdrawalUsername !== '' && withdrawalAcc === ' ')
+                        ?
+                        withdrawalData.filter((items)=> items.username === withdrawalUsername):
+                        withdrawalData.filter((items,index)=> index <= showLength &&( items.status ==="approved" || items.status === "unapproved"))
 
 
 
@@ -444,6 +488,7 @@ function WithdrawalSheetFun({items , index}){
 
             </div>
                   <div className="card-body table-responsive p-2">
+                  <h3>Total Ratio:{FilteredWithdrawList.length}</h3>
                     {
                       withdrawalData.length !==0?
                       <table className="table  text-nowrap">
@@ -465,12 +510,21 @@ function WithdrawalSheetFun({items , index}){
                         </tr>
                       </thead>
                       <tbody className="text-center">
-                        
+
+
+
+
+                        {FilteredWithdrawList.map((items,index)=>{
+                          return(
+                            <WithdrawalSheetFun items={items} index={index}/>
+                          )
+                        })}
+{/*                         
                         {
                           withdrawalDate ==='' &&  withdrawalAcc === '' && (withdrawalStatus ==='approved' || withdrawalStatus ==='unapproved')
                           
                          ?
-                      withdrawalData.filter((items)=> items.status === withdrawalStatus).map((items,index)=>{
+                         withdrawalData.length > 0 && withdrawalData.filter((items)=> items.status === withdrawalStatus).map((items,index)=>{
                         return(
                           <WithdrawalSheetFun items={items} index={index}/>
                         )
@@ -504,7 +558,7 @@ function WithdrawalSheetFun({items , index}){
                         :
                         ( withdrawalUsername !== '' && withdrawalStatus === 'All') || ( withdrawalUsername !== '' && withdrawalAcc === ' ')
                         ?
-                        withdrawalData.filter((items)=> items.username.toLowerCase() === withdrawalUsername).map((items,index)=>{
+                        withdrawalData.filter((items)=> items.username === withdrawalUsername).map((items,index)=>{
                           return(
                             <WithdrawalSheetFun items={items} index={index}/>
                           )
@@ -519,7 +573,7 @@ function WithdrawalSheetFun({items , index}){
                           
 
                         }
-                     
+                      */}
 
                       </tbody>
                     </table>

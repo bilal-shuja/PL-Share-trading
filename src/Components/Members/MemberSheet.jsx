@@ -391,7 +391,7 @@ useEffect(() => {
                           :
                           memDate ==='' &&  memPhone === '' && userName !== ''?
                         
-                          newMemberSheet.filter((items)=> items.username.toLowerCase() === userName).map((items,index)=>{
+                          newMemberSheet.filter((items)=> items.username === userName).map((items,index)=>{
                             return(
                               <MemberList items={items} index={index}/>
                             )
@@ -400,7 +400,7 @@ useEffect(() => {
 
                           memDate ==='' &&  memPhone === '' && userName === '' &&  referalCode !== '' ?
                         
-                          newMemberSheet.filter((items)=> items.referal_code.toLowerCase() === referalCode).map((items,index)=>{
+                          newMemberSheet.filter((items)=> items.referal_code === referalCode).map((items,index)=>{
                             return(
                               <MemberList items={items} index={index}/>
                             )

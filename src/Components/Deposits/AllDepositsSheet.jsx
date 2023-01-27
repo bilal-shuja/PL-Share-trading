@@ -23,6 +23,7 @@ const AllDepositsTable = () => {
   const [receID, setReceID] = useState("");
   const [hostMessage, setHostMessage] = useState("");
   const [senderID, setSenderID] = useState("");
+  const [depoRatio , setDepoRatio] = useState("");
 
   const [queryOne, setQueryOne] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -107,7 +108,7 @@ const AllDepositsTable = () => {
 
   // Function which approves individual deposits of users:
 
-  function approveSingleDepo(id) {
+  function approveSingleDepo(id,memID,amount) {
     const depObj = {
       id: id,
     };
@@ -115,7 +116,8 @@ const AllDepositsTable = () => {
       .post(`${process.env.REACT_APP_BASE_URL}approve_deposit`, depObj)
       .then((res) => {
         toast.info(`Deposit ${res.data.message}`, { theme: "dark" });
-        console.log(res)
+        geneNotificationOnDepoStatus(memID,amount,res.data.message)
+
       })
       .catch((error) => {
         if (error.status === "401") {
@@ -157,6 +159,9 @@ const AllDepositsTable = () => {
     setDepoSum(getDepoSum);
   }
 
+
+
+  const newDeposits = depoTemArr.length > 0 && depoTemArr.filter((item)=> item.status !=="rejected")
 
 
   function removeUserFromDepopsitSheet() {
@@ -204,6 +209,30 @@ const AllDepositsTable = () => {
     axios
       .post(`${process.env.REACT_APP_BASE_URL}post_notification`, notifiObj)
       .then((res) => {
+
+        if (res.data.status === "200") {
+          toast.info("Notified to User", { theme: "dark" });
+        } else {
+          toast.info(`${res.data.message}`, { theme: "dark" });
+        }
+      })
+      .catch((error) => {
+        toast.warn("Something went wrong", { theme: "dark" });
+      });
+  }
+
+
+  
+  function geneNotificationOnDepoStatus(memID,amount,message) {
+    const notifiObj = {
+      receiver_id: memID,
+      body: `Your deposit amount ${amount} has ${message}`,
+      title: `Deposit_${message}`,
+    };
+    axios
+      .post(`${process.env.REACT_APP_BASE_URL}post_notification`, notifiObj)
+      .then((res) => {
+
         if (res.data.status === "200") {
           toast.info("Notified to User", { theme: "dark" });
         } else {
@@ -290,7 +319,7 @@ const AllDepositsTable = () => {
               {roleID === "2" || roleID === "3" || roleID === "4" ? null : (
                 <>
                   <button
-                    onClick={() => approveSingleDepo(items.id)}
+                    onClick={() => approveSingleDepo(items.id,items.payer_id ,items.amount)}
                     className="btn btn-outline-info btn-sm"
                     data-toggle="tooltip"
                     data-placement="top"
@@ -438,6 +467,9 @@ const AllDepositsTable = () => {
 
                       </div>
 
+                      
+                    
+
                       <button
                         className="btn btn-outline-info mt-2 btn-sm"
                         onClick={() => {
@@ -517,6 +549,8 @@ const AllDepositsTable = () => {
                     </div>
 
                     <div className="card-body table-responsive p-2">
+                    <h3>Total Ratio:{newDeposits.length}</h3>
+
                       {depoTemArr.length !== 0 ? (
                         <table className="table  text-nowrap">
                           <thead className="text-center">
@@ -538,13 +572,8 @@ const AllDepositsTable = () => {
                             </tr>
                           </thead>
                           <tbody className="text-center">
-                            {depoTemArr
-                              .filter(
-                                (item) =>
-                                  item.status === "approved" ||
-                                  item.status === "unapproved" ||
-                                  item.status === "All"
-                              )
+                            {newDeposits
+                           
                               .map((items, index) => {
                                 return (
                                   <DepositSheet items={items} index={index} />
