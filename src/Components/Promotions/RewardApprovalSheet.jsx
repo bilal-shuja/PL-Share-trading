@@ -181,7 +181,7 @@ const RewardApprovalSheet = () => {
   function geneRewardNotification(memID){
     const notifiObj ={
       receiver_id:memID,
-      body:`Congratulations! You have received amount of 500 from trading tube`,
+      body:`Congratulations! You got reward of $5 from PLShare`,
       title:"Reward amount received"
     }
     axios.post(`${process.env.REACT_APP_BASE_URL}post_notification`,notifiObj)
@@ -335,7 +335,7 @@ const RewardApprovalSheet = () => {
             />
           </td>
           <td>{items.amount}</td>
-          <td>
+          {/* <td>
             <img
               src={`${process.env.REACT_APP_IMG_URL}${items.image_2}`}
               width={50}
@@ -352,7 +352,7 @@ const RewardApprovalSheet = () => {
                 }
               }
             />
-          </td>
+          </td> */}
           {items.status === "approved" ? (
             <td style={{ color: "#64dd17" }}>{items.status}</td>
           ) : (
@@ -577,7 +577,7 @@ const RewardApprovalSheet = () => {
                             <th>Phone</th>
                             <th>Review CNIC</th>
                             <th>Amount</th>
-                            <th>Review ScreenShot</th>
+                            {/* <th>Review ScreenShot</th> */}
                             <th>Status</th>
                             <th>Date</th>
                             <th>Time</th>

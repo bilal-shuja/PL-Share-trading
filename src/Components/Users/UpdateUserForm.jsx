@@ -36,7 +36,7 @@ const UpdateUserForm = () => {
   
         })
         .catch((error)=>{
-          console.log(error)
+          return error;
         })
     }
 
@@ -52,12 +52,14 @@ const UpdateUserForm = () => {
     formdata.append("phone", userPhone);
     formdata.append("role_id", role);
     formdata.append("sender_role_id", 1);
+    password === null &&
     formdata.append("password", password);  
     
     
-        axios.post(`${process.env.REACT_APP_BASE_URL}updatememberwithid/${ID}`,formdata)
+        axios.post(`${process.env.REACT_APP_BASE_URL}updateuserwithid/${ID}`,formdata)
         .then((res)=>{
           toast.info("User Updated!",{theme:"dark"});
+          console.log(res)
           setLoading(false)
           setTimeout(() => {
             navigate('/UserSheet')
@@ -135,7 +137,7 @@ const UpdateUserForm = () => {
                   <div className="col-4">
                   <div className="form-group">
                       <label htmlFor="exampleInputEmail1">Phone*</label>
-                      <input type="number" name="userPhone"  className="form-control" id="exampleInputEmail5"  defaultValue={userPhone} placeholder="Enter Income" style={{background:colorScheme.login_card_bg, color:colorScheme.card_txt_color}} onChange={(e) =>userPhone(e.target.value)}
+                      <input type="number" name="userPhone"  className="form-control" id="exampleInputEmail5"  defaultValue={userPhone} placeholder="Enter Income" style={{background:colorScheme.login_card_bg, color:colorScheme.card_txt_color}} onChange={(e) =>setUserPhone(e.target.value)}
                       />
                   </div>
                   </div>

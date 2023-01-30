@@ -448,13 +448,13 @@ const Sidebar = () => {
                           <p>Payment Form</p>
                         </Link>
                       </li>
-
+{/* 
                       <li className="nav-item">
                         <Link to="/PaymentSheet" className="nav-link ">
                           <i className="far fa-circle nav-icon" />
                           <p>Payment Sheet</p>
                         </Link>
-                      </li>
+                      </li> */}
                     </ul>
                   </li>
                 ) : null}

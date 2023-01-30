@@ -88,7 +88,7 @@ const HelpChatCenter = () => {
       setTicketReplys(res.data.Reply)
     })
     .catch((error)=>{
-      console.log(error)
+      return error;
     })
   }
 

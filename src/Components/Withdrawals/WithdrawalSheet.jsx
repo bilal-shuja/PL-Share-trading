@@ -195,7 +195,7 @@ function geneNotification(){
 function geneNotificationOnWithdrawalStatus(userID,amount,message) {
   const notifiObj = {
     receiver_id: userID,
-    body: `Your deposit amount ${amount} has ${message}`,
+    body: `Your deposit amount $ ${amount} has ${message}`,
     title: `Withdrawal_${message}`,
   };
   axios

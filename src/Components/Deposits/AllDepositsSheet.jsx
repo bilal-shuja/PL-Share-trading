@@ -226,7 +226,7 @@ const AllDepositsTable = () => {
   function geneNotificationOnDepoStatus(memID,amount,message) {
     const notifiObj = {
       receiver_id: memID,
-      body: `Your deposit amount ${amount} has ${message}`,
+      body: `Your deposit amount $ ${amount} has ${message}`,
       title: `Deposit_${message}`,
     };
     axios
